@@ -60,7 +60,10 @@ class BeautifyLatexCommand(sublime_plugin.TextCommand):
 
     def cmd(self, path="-"):
         executable = self.settings.get('cmd')
+        if executable is None:
+            dir_path = os.path.dirname(os.path.realpath(__file__))
 
+            executable = dir_path+ '/latexindent/latexindent.exe'
         if executable is None:
             executable = self.which(
                 'latexindent.exe') or self.which('latexindent') or self.which('latexindent.pl')
@@ -116,6 +119,7 @@ class BeautifyLatexCommand(sublime_plugin.TextCommand):
             return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
 
         fpath, fname = os.path.split(program)
+
         if fpath:
             if is_exe(program):
                 return program
